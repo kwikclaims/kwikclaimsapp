@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loss Assessment Generator | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: #f7fafc;
+    }
+
+    .generator-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .generator-header {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .generator-header h1 {
+      margin: 0 0 0.5rem 0;
+      color: #1a202c;
+    }
+
+    .generator-header p {
+      margin: 0;
+      color: #718096;
+    }
+
+    .btn-back {
+      display: inline-block;
+      background: #4a5568;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+
+    .btn-back:hover {
+      background: #2d3748;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section-card h2 {
+      margin: 0 0 1.5rem 0;
+      color: #1a202c;
+      font-size: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .file-upload-zone {
+      border: 2px dashed #cbd5e0;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      background: #f7fafc;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .file-upload-zone:hover {
+      border-color: #667eea;
+      background: #edf2f7;
+    }
+
+    .file-upload-zone input {
+      display: none;
+    }
+
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .photo-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-remove {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #e53e3e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .generate-actions {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      padding: 1.5rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .generate-actions-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn-generate {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .btn-generate:hover {
+      opacity: 0.9;
+    }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .list-input-group {
+      margin-bottom: 1rem;
+    }
+
+    .list-input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .list-input-row input {
+      flex: 1;
+    }
+
+    .btn-add-item {
+      background: #667eea;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .btn-remove-item {
+      background: #e53e3e;
+      color: white;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="generator-container">
+    <a href="#" id="backBtn" class="btn-back">← Back to Claim</a>
+
+    <div class="generator-header">
+      <h1>Loss Assessment Generator</h1>
+      <p>Complete all sections to generate a comprehensive loss assessment report</p>
+    </div>
+
+    <div class="section-card">
+      <h2>1. Cover Letter</h2>
+      <div class="form-group">
+        <label for="coverLetter">Cover Letter Content</label>
+        <textarea id="coverLetter" placeholder="Enter the cover letter content..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>2. Video Links</h2>
+      <div id="videoLinksContainer">
+        <div class="list-input-row">
+          <input type="url" placeholder="Enter video URL" class="video-link-input">
+          <button class="btn-remove-item" onclick="this.parentElement.remove()">×</button>
+        </div>
+      </div>
+      <button class="btn-add-item" id="addVideoLink">+ Add Video Link</button>
+    </div>
+
+    <div class="section-card">
+      <h2>3. Measurements</h2>
+      <div class="form-group">
+        <label for="measurements">Measurement Details</label>
+        <textarea id="measurements" placeholder="Enter measurements and dimensions..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>4. Material Tests</h2>
+      <div class="form-group">
+        <label for="materialTests">Material Test Results</label>
+        <textarea id="materialTests" placeholder="Enter material test information..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>5. Engineer Reports</h2>
+      <div class="form-group">
+        <label for="engineerReports">Engineer Report Details</label>
+        <textarea id="engineerReports" placeholder="Enter engineer report information..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>6. Estimate</h2>
+      <div class="form-group">
+        <label for="estimate">Estimate Details</label>
+        <textarea id="estimate" placeholder="Enter estimate information..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>7. Photos</h2>
+      <p style="color: #718096; margin-bottom: 1rem;">Upload up to 250 photos. Photos will be arranged 4 per page in the final report.</p>
+      <div class="file-upload-zone" id="photoUploadZone">
+        <input type="file" id="photoInput" accept="image/*" multiple>
+        <p style="margin: 0; color: #4a5568;">Click to upload photos or drag and drop</p>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #718096;">Supports JPG, PNG (up to 250 images)</p>
+      </div>
+      <div id="photosGrid" class="photos-grid"></div>
+    </div>
+
+    <div class="section-card">
+      <h2>8. Builder Codes</h2>
+      <div class="form-group">
+        <label for="builderCodes">Building Code References</label>
+        <textarea id="builderCodes" placeholder="Enter relevant building codes and references..."></textarea>
+      </div>
+    </div>
+
+    <div style="height: 100px;"></div>
+  </div>
+
+  <div class="generate-actions">
+    <div class="generate-actions-inner">
+      <button class="btn-generate" id="generateBtn">Generate PDF Report</button>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <h3 style="margin: 0;">Generating Loss Assessment...</h3>
+      <p style="margin: 0.5rem 0 0 0; color: #718096;">This may take a moment</p>
+    </div>
+  </div>
+
+  <script type="module" src="js/loss-assessment.js"></script>
+</body>
+</html>

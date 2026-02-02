@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .dashboard-container {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 12px;
+      padding: 3rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .login-card h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+      color: #1a202c;
+    }
+
+    .login-card p {
+      margin: 0 0 2rem 0;
+      color: #718096;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .error-message {
+      color: #e53e3e;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .dashboard-main {
+      display: none;
+      min-height: 100vh;
+      background: #f7fafc;
+    }
+
+    .dashboard-main.show {
+      display: block;
+    }
+
+    .dashboard-header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+      color: #1a202c;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: #718096;
+    }
+
+    .rep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .rep-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .rep-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .rep-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+      color: #1a202c;
+    }
+
+    .rep-card p {
+      margin: 0.25rem 0;
+      color: #718096;
+      font-size: 0.875rem;
+    }
+
+    .add-rep-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 200px;
+    }
+
+    .add-rep-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .add-rep-card .icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .add-rep-card h3 {
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #718096;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+
+    .close-btn:hover {
+      background: #f7fafc;
+    }
+
+    .btn-logout {
+      background: #e53e3e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .btn-logout:hover {
+      background: #c53030;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .empty-state p {
+      margin: 0 0 2rem 0;
+      color: #718096;
+    }
+  </style>
+</head>
+<body>
+  <div id="loginContainer" class="dashboard-container">
+    <div class="login-card">
+      <h1>Dashboard Login</h1>
+      <p>Enter your password to access the dashboard</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="off">
+          <div id="errorMessage" class="error-message">Incorrect password. Please try again.</div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboardMain" class="dashboard-main">
+    <div class="dashboard-header">
+      <h1>Representatives</h1>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+    <div class="dashboard-content">
+      <div class="section-header">
+        <h2>Manage Representatives</h2>
+        <p>View and manage all representatives and their companies</p>
+      </div>
+      <div id="repGrid" class="rep-grid">
+        <div class="rep-card add-rep-card" id="addRepBtn">
+          <div class="icon">+</div>
+          <h3>Add New Representative</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="addRepModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Representative</h2>
+        <button class="close-btn" id="closeAddRepModal">&times;</button>
+      </div>
+      <form id="addRepForm">
+        <div class="form-group">
+          <label for="repName">Full Name *</label>
+          <input type="text" id="repName" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="repEmail">Email *</label>
+          <input type="email" id="repEmail" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="repPhone">Phone *</label>
+          <input type="tel" id="repPhone" name="phone" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Add Representative</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

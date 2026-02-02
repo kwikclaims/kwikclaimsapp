@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate of Completion | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: #f7fafc;
+      font-family: Georgia, serif;
+    }
+
+    .generator-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .btn-back {
+      display: inline-block;
+      background: #4a5568;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn-back:hover {
+      background: #2d3748;
+    }
+
+    .certificate-preview {
+      background: white;
+      border-radius: 8px;
+      padding: 4rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border: 8px double #2d3748;
+    }
+
+    .cert-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .company-logo {
+      max-width: 150px;
+      max-height: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .cert-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin: 1rem 0;
+      letter-spacing: 2px;
+    }
+
+    .cert-subtitle {
+      font-size: 1rem;
+      color: #718096;
+      font-style: italic;
+    }
+
+    .cert-body {
+      margin: 3rem 0;
+      text-align: center;
+    }
+
+    .cert-text {
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: #2d3748;
+      margin-bottom: 2rem;
+    }
+
+    .editable-inline {
+      display: inline-block;
+      min-width: 200px;
+      padding: 0.25rem 0.5rem;
+      border-bottom: 2px solid #cbd5e0;
+      font-weight: 600;
+      color: #1a202c;
+      background: transparent;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      text-align: center;
+    }
+
+    .editable-inline:focus {
+      outline: none;
+      border-bottom-color: #667eea;
+      background: #f7fafc;
+    }
+
+    .project-details {
+      margin: 3rem 0;
+      padding: 2rem;
+      background: #f7fafc;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .project-details h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin: 0 0 1.5rem 0;
+      text-align: center;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: start;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: #2d3748;
+      text-align: right;
+    }
+
+    .detail-value {
+      color: #4a5568;
+    }
+
+    .editable-field {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-family: Georgia, serif;
+    }
+
+    textarea.editable-field {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .photo-section {
+      margin: 2rem 0;
+    }
+
+    .photo-section h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin: 0 0 1rem 0;
+      text-align: center;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .photo-item {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-remove {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #e53e3e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-upload-zone {
+      border: 2px dashed #cbd5e0;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      background: #f7fafc;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: Arial, sans-serif;
+    }
+
+    .file-upload-zone:hover {
+      border-color: #667eea;
+      background: #edf2f7;
+    }
+
+    .file-upload-zone input {
+      display: none;
+    }
+
+    .signature-section {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    .signature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .signature-block {
+      text-align: center;
+    }
+
+    .signature-pad-container {
+      border: 2px solid #cbd5e0;
+      border-radius: 4px;
+      background: white;
+      margin: 1rem 0;
+    }
+
+    .signature-canvas {
+      display: block;
+      width: 100%;
+      height: 120px;
+      cursor: crosshair;
+    }
+
+    .signature-controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .btn-clear {
+      background: #e53e3e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-family: Arial, sans-serif;
+    }
+
+    .signature-line {
+      border-top: 2px solid #2d3748;
+      margin: 2rem 0 0.5rem 0;
+    }
+
+    .signature-label {
+      font-size: 0.875rem;
+      color: #4a5568;
+    }
+
+    .signature-info input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .action-buttons {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      padding: 1.5rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .action-buttons-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .btn-action {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+    }
+
+    .btn-download {
+      background: #48bb78;
+      color: white;
+    }
+
+    .btn-print {
+      background: #667eea;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="generator-container">
+    <a href="#" id="backBtn" class="btn-back">← Back to Claim</a>
+
+    <div class="certificate-preview">
+      <div class="cert-header">
+        <img id="companyLogo" class="company-logo" alt="Company Logo" style="display: none;">
+        <h1 class="cert-title">CERTIFICATE OF COMPLETION</h1>
+        <p class="cert-subtitle">This certifies that the following work has been completed</p>
+      </div>
+
+      <div class="cert-body">
+        <p class="cert-text">
+          This is to certify that
+          <input type="text" id="companyName" class="editable-inline" placeholder="Company Name">
+          has successfully completed all work for
+          <input type="text" id="clientName" class="editable-inline" placeholder="Client Name">
+          at the property located at
+          <input type="text" id="propertyAddress" class="editable-inline" placeholder="Property Address" style="min-width: 300px;">
+        </p>
+      </div>
+
+      <div class="project-details">
+        <h3>Project Details</h3>
+        <div class="detail-row">
+          <div class="detail-label">Project Reference:</div>
+          <div class="detail-value"><input type="text" id="projectRef" class="editable-field"></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Completion Date:</div>
+          <div class="detail-value"><input type="date" id="completionDate" class="editable-field"></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Work Description:</div>
+          <div class="detail-value"><textarea id="workDescription" class="editable-field" placeholder="Describe the work completed..."></textarea></div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Materials Used:</div>
+          <div class="detail-value"><textarea id="materialsUsed" class="editable-field" placeholder="List materials used..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="photo-section">
+        <h3>Project Photos (Optional)</h3>
+        <div class="file-upload-zone" id="photoUploadZone">
+          <input type="file" id="photoInput" accept="image/*" multiple>
+          <p style="margin: 0; color: #4a5568;">Click to upload project photos or drag and drop</p>
+          <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #718096;">Supports JPG, PNG</p>
+        </div>
+        <div id="photoGrid" class="photo-grid"></div>
+      </div>
+
+      <div class="signature-section">
+        <div class="signature-row">
+          <div class="signature-block">
+            <h3 style="font-size: 1rem; margin-bottom: 1rem;">Contractor</h3>
+            <div class="signature-pad-container">
+              <canvas id="contractorSignature" class="signature-canvas"></canvas>
+            </div>
+            <div class="signature-controls">
+              <button class="btn-clear" id="clearContractor">Clear</button>
+            </div>
+            <div class="signature-info">
+              <input type="text" id="contractorName" placeholder="Print Name">
+              <input type="text" id="contractorTitle" placeholder="Title">
+              <input type="date" id="contractorDate">
+            </div>
+          </div>
+
+          <div class="signature-block">
+            <h3 style="font-size: 1rem; margin-bottom: 1rem;">Client</h3>
+            <div class="signature-pad-container">
+              <canvas id="clientSignature" class="signature-canvas"></canvas>
+            </div>
+            <div class="signature-controls">
+              <button class="btn-clear" id="clearClient">Clear</button>
+            </div>
+            <div class="signature-info">
+              <input type="text" id="clientSignerName" placeholder="Print Name">
+              <input type="date" id="clientDate">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 150px;"></div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <div class="action-buttons-inner">
+      <button class="btn-action btn-download" id="btnDownload">Download PDF</button>
+      <button class="btn-action btn-print" id="btnPrint">Print</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/certificate-completion.js"></script>
+</body>
+</html>

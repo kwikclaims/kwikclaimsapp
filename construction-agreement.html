@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Construction Agreement | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: #f7fafc;
+      font-family: Arial, sans-serif;
+    }
+
+    .generator-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .btn-back {
+      display: inline-block;
+      background: #4a5568;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 1rem;
+    }
+
+    .btn-back:hover {
+      background: #2d3748;
+    }
+
+    .document-preview {
+      background: white;
+      border-radius: 8px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .doc-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #2d3748;
+    }
+
+    .company-logo {
+      max-width: 150px;
+      max-height: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .doc-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin: 0;
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+    }
+
+    .info-section h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin: 0 0 1rem 0;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .info-value {
+      color: #4a5568;
+    }
+
+    .editable-field {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .editable-field:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    textarea.editable-field {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .signature-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    .signature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .signature-block {
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .signature-block h4 {
+      margin: 0 0 1rem 0;
+      font-size: 1rem;
+      color: #1a202c;
+    }
+
+    .signature-pad-container {
+      border: 2px solid #cbd5e0;
+      border-radius: 4px;
+      background: white;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .signature-canvas {
+      display: block;
+      width: 100%;
+      height: 150px;
+      cursor: crosshair;
+    }
+
+    .signature-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn-clear {
+      background: #e53e3e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .btn-lock {
+      background: #48bb78;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .signature-info {
+      margin-top: 1rem;
+    }
+
+    .signature-info input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-buttons {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      padding: 1.5rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .action-buttons-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .btn-download {
+      background: #48bb78;
+      color: white;
+    }
+
+    .btn-print {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-text {
+      background: #ed8936;
+      color: white;
+    }
+
+    .btn-email {
+      background: #4299e1;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="generator-container">
+    <a href="#" id="backBtn" class="btn-back">← Back to Claim</a>
+
+    <div class="document-preview" id="documentPreview">
+      <div class="doc-header">
+        <img id="companyLogo" class="company-logo" alt="Company Logo" style="display: none;">
+        <h1 class="doc-title">CONSTRUCTION LABOR AGREEMENT</h1>
+      </div>
+
+      <div class="info-section">
+        <h3>Contractor Information</h3>
+        <div class="info-grid">
+          <div class="info-label">Company Name:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="contractorName"></div>
+
+          <div class="info-label">Address:</div>
+          <div class="info-value"><textarea class="editable-field" id="contractorAddress"></textarea></div>
+
+          <div class="info-label">Phone:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="contractorPhone"></div>
+
+          <div class="info-label">Email:</div>
+          <div class="info-value"><input type="email" class="editable-field" id="contractorEmail"></div>
+
+          <div class="info-label">License:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="contractorLicense"></div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Client Information</h3>
+        <div class="info-grid">
+          <div class="info-label">Name:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="clientName"></div>
+
+          <div class="info-label">Property Address:</div>
+          <div class="info-value"><textarea class="editable-field" id="clientAddress"></textarea></div>
+
+          <div class="info-label">Phone:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="clientPhone"></div>
+
+          <div class="info-label">Email:</div>
+          <div class="info-value"><input type="email" class="editable-field" id="clientEmail"></div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Project Details</h3>
+        <div class="info-grid">
+          <div class="info-label">Job Reference:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="jobReference"></div>
+
+          <div class="info-label">Scope of Work:</div>
+          <div class="info-value"><textarea class="editable-field" id="scopeOfWork" placeholder="Describe the scope of work..."></textarea></div>
+
+          <div class="info-label">Contract Amount:</div>
+          <div class="info-value"><input type="text" class="editable-field" id="contractAmount" placeholder="$0.00"></div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Terms and Conditions</h3>
+        <textarea class="editable-field" id="terms" style="width: 100%; min-height: 200px;" placeholder="Enter agreement terms and conditions...">This Construction Labor Agreement is entered into between the Contractor and the Client for the work described above. The Contractor agrees to perform the work in a professional and workmanlike manner in accordance with industry standards. Payment terms and schedule to be agreed upon by both parties. This agreement may be terminated by either party with written notice.</textarea>
+      </div>
+
+      <div class="signature-section">
+        <h3>Signatures</h3>
+        <div class="signature-row">
+          <div class="signature-block">
+            <h4>Contractor Signature</h4>
+            <div class="signature-pad-container">
+              <canvas id="contractorSignature" class="signature-canvas"></canvas>
+            </div>
+            <div class="signature-controls">
+              <button class="btn-clear" id="clearContractor">Clear</button>
+              <button class="btn-lock" id="lockContractor">Lock</button>
+            </div>
+            <div class="signature-info">
+              <input type="text" id="contractorSignerName" placeholder="Print Name">
+              <input type="date" id="contractorDate">
+            </div>
+          </div>
+
+          <div class="signature-block">
+            <h4>Client Signature</h4>
+            <div class="signature-pad-container">
+              <canvas id="clientSignature" class="signature-canvas"></canvas>
+            </div>
+            <div class="signature-controls">
+              <button class="btn-clear" id="clearClient">Clear</button>
+              <button class="btn-lock" id="lockClient">Lock</button>
+            </div>
+            <div class="signature-info">
+              <input type="text" id="clientSignerName" placeholder="Print Name">
+              <input type="date" id="clientDate">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 150px;"></div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <div class="action-buttons-inner">
+      <button class="btn-action btn-download" id="btnDownload">Download PDF</button>
+      <button class="btn-action btn-print" id="btnPrint">Print</button>
+      <button class="btn-action btn-text" id="btnText">Send via Text</button>
+      <button class="btn-action btn-email" id="btnEmail">Send via Email</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/construction-agreement.js"></script>
+</body>
+</html>

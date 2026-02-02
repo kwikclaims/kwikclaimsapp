@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claim Details | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .dashboard-main {
+      min-height: 100vh;
+      background: #f7fafc;
+    }
+
+    .dashboard-header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-back {
+      background: #4a5568;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-back:hover {
+      background: #2d3748;
+    }
+
+    .btn-save {
+      background: #48bb78;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .btn-save:hover {
+      background: #38a169;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      margin: 0 0 1.5rem 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .question-item {
+      padding: 1rem;
+      background: #f7fafc;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .question-item h4 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      color: #1a202c;
+    }
+
+    .question-item p {
+      margin: 0;
+      color: #4a5568;
+      font-size: 0.875rem;
+    }
+
+    .generator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .generator-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .generator-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .stage-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .stage-intake { background: #bee3f8; color: #2c5282; }
+    .stage-assessment { background: #feebc8; color: #7c2d12; }
+    .stage-submitted { background: #c6f6d5; color: #22543d; }
+    .stage-approved { background: #9ae6b4; color: #22543d; }
+    .stage-completed { background: #cbd5e0; color: #2d3748; }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+    }
+
+    .save-indicator {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #48bb78;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .save-indicator.show {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-main">
+    <div class="dashboard-header">
+      <h1 id="claimTitle">Claim Details</h1>
+      <div class="header-actions">
+        <button id="saveBtn" class="btn-save">Save Changes</button>
+        <a href="#" id="backBtn" class="btn-back">Back to Claims</a>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <div id="loadingContainer" class="loading">Loading claim details...</div>
+
+      <div id="claimContent" style="display: none;">
+        <div class="section">
+          <h2 class="section-title">Basic Information</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="claim_number">Claim Number *</label>
+              <input type="text" id="claim_number" name="claim_number" required>
+            </div>
+            <div class="form-group">
+              <label for="stage">Claim Stage *</label>
+              <select id="stage" name="stage" required>
+                <option value="intake">Intake</option>
+                <option value="assessment">Assessment</option>
+                <option value="submitted">Submitted</option>
+                <option value="approved">Approved</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date_of_loss">Date of Loss</label>
+              <input type="date" id="date_of_loss" name="date_of_loss">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Homeowner Information</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="homeowner_first_name">First Name *</label>
+              <input type="text" id="homeowner_first_name" name="homeowner_first_name" required>
+            </div>
+            <div class="form-group">
+              <label for="homeowner_last_name">Last Name *</label>
+              <input type="text" id="homeowner_last_name" name="homeowner_last_name" required>
+            </div>
+            <div class="form-group">
+              <label for="homeowner_phone">Phone *</label>
+              <input type="tel" id="homeowner_phone" name="homeowner_phone" required>
+            </div>
+            <div class="form-group">
+              <label for="homeowner_email">Email *</label>
+              <input type="email" id="homeowner_email" name="homeowner_email" required>
+            </div>
+            <div class="form-group full-width">
+              <label for="property_address">Property Address *</label>
+              <textarea id="property_address" name="property_address" required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Insurance Information</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="insurance_company">Insurance Company *</label>
+              <input type="text" id="insurance_company" name="insurance_company" required>
+            </div>
+            <div class="form-group">
+              <label for="policy_number">Policy Number</label>
+              <input type="text" id="policy_number" name="policy_number">
+            </div>
+            <div class="form-group">
+              <label for="adjuster_name">Adjuster Name</label>
+              <input type="text" id="adjuster_name" name="adjuster_name">
+            </div>
+            <div class="form-group">
+              <label for="adjuster_phone">Adjuster Phone</label>
+              <input type="tel" id="adjuster_phone" name="adjuster_phone">
+            </div>
+            <div class="form-group">
+              <label for="adjuster_email">Adjuster Email</label>
+              <input type="email" id="adjuster_email" name="adjuster_email">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Intake Questions</h2>
+          <div id="intakeQuestions">
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Document Generators</h2>
+          <p style="margin: 0 0 1rem 0; color: #718096;">Generate professional documents for this claim</p>
+          <div class="generator-grid">
+            <button class="generator-btn" id="genLossAssessment">Loss Assessment</button>
+            <button class="generator-btn" id="genConsultation">Consultation Agreement</button>
+            <button class="generator-btn" id="genConstruction">Construction Agreement</button>
+            <button class="generator-btn" id="genReceipt">Receipt</button>
+            <button class="generator-btn" id="genCertificate">Certificate of Completion</button>
+            <button class="generator-btn" id="genInvoice">Invoice/Estimate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-indicator" id="saveIndicator">
+    Changes saved successfully!
+  </div>
+
+  <script type="module" src="js/claim-details.js"></script>
+</body>
+</html>

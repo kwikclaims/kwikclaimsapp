@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Companies | Kwik Claims Inc.</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .dashboard-main {
+      min-height: 100vh;
+      background: #f7fafc;
+    }
+
+    .dashboard-header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-back {
+      background: #4a5568;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-back:hover {
+      background: #2d3748;
+    }
+
+    .dashboard-content {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+      color: #1a202c;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: #718096;
+    }
+
+    .rep-info {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .rep-info h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.25rem;
+      color: #1a202c;
+    }
+
+    .rep-info p {
+      margin: 0.25rem 0;
+      color: #718096;
+      font-size: 0.875rem;
+    }
+
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .company-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .company-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .company-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      background: #f7fafc;
+      padding: 0.5rem;
+    }
+
+    .company-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+      color: #1a202c;
+    }
+
+    .company-card p {
+      margin: 0.25rem 0;
+      color: #718096;
+      font-size: 0.875rem;
+    }
+
+    .add-company-card {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 200px;
+    }
+
+    .add-company-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .add-company-card .icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .add-company-card h3 {
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #718096;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+
+    .close-btn:hover {
+      background: #f7fafc;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #48bb78;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 0.75rem;
+      background: #f7fafc;
+      border: 2px dashed #cbd5e0;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .file-input-label:hover {
+      background: #edf2f7;
+      border-color: #48bb78;
+    }
+
+    .file-preview {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .file-preview img {
+      max-width: 150px;
+      max-height: 150px;
+      object-fit: contain;
+      border-radius: 6px;
+      border: 2px solid #e2e8f0;
+      padding: 0.5rem;
+      background: #f7fafc;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      color: #1a202c;
+    }
+
+    .empty-state p {
+      margin: 0 0 2rem 0;
+      color: #718096;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #718096;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-main">
+    <div class="dashboard-header">
+      <h1>Companies</h1>
+      <div class="header-actions">
+        <a href="dashboard.html" class="btn-back">Back to Representatives</a>
+      </div>
+    </div>
+    <div class="dashboard-content">
+      <div id="repInfo" class="rep-info">
+        <div class="loading">Loading representative information...</div>
+      </div>
+
+      <div class="section-header">
+        <h2>Manage Companies</h2>
+        <p>View and manage all companies for this representative</p>
+      </div>
+
+      <div id="companyGrid" class="company-grid">
+        <div class="company-card add-company-card" id="addCompanyBtn">
+          <div class="icon">+</div>
+          <h3>Add New Company</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="addCompanyModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Company</h2>
+        <button class="close-btn" id="closeAddCompanyModal">&times;</button>
+      </div>
+      <form id="addCompanyForm">
+        <div class="form-group">
+          <label for="companyName">Company Name *</label>
+          <input type="text" id="companyName" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="companyPhone">Phone *</label>
+          <input type="tel" id="companyPhone" name="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="companyAddress">Address *</label>
+          <textarea id="companyAddress" name="address" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="companyLicense">License Number</label>
+          <input type="text" id="companyLicense" name="license">
+        </div>
+        <div class="form-group">
+          <label for="companyEmail">Email *</label>
+          <input type="email" id="companyEmail" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="companyLogo">Company Logo (optional)</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="companyLogo" name="logo" accept="image/*">
+            <label for="companyLogo" class="file-input-label">
+              Click to upload logo image
+            </label>
+          </div>
+          <div id="logoPreview" class="file-preview"></div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Add Company</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/companies.js"></script>
+</body>
+</html>

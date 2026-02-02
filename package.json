@@ -6,5 +6,11 @@
     "dev": "npx vite",
     "build": "echo 'Static site - no build needed'",
     "preview": "npx vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.93.3",
+    "jspdf": "^4.1.0",
+    "pdf-lib": "^1.17.1",
+    "signature_pad": "^5.1.3"
   }
 }
