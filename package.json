@@ -1,0 +1,10 @@
+{
+  "name": "kwik-claims",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx vite",
+    "build": "echo 'Static site - no build needed'",
+    "preview": "npx vite preview"
+  }
+}
