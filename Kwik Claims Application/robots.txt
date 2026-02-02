@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kwikclaims.org/sitemap.xml
