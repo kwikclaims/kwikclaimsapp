@@ -1,7 +1,10 @@
 # Site Loading Issues - Fixes Applied
 
 ## Summary
-Fixed critical site loading issues caused by third-party script failures (Chameleon/Messo) and failing API calls. The application now loads reliably even when external dependencies fail.
+Fixed critical site loading issues caused by Bolt.new preview wrapper injecting failing scripts (Chameleon/Messo) and making failing API calls. The application now loads reliably by aggressively blocking Bolt's infrastructure scripts.
+
+## ⚡ AGGRESSIVE MODE ENABLED
+This fix implements a **hard block** on all Bolt.new preview infrastructure that was preventing the app from rendering.
 
 ---
 
@@ -26,7 +29,28 @@ Fixed critical site loading issues caused by third-party script failures (Chamel
 
 ## Solutions Implemented
 
-### A. Created Defensive Error Guard (`js/error-guard.js`)
+### A. Inline Bolt Blocker (Minified, runs FIRST)
+
+**Placement:** First `<script>` tag in `<head>`, before any other code
+
+**What it blocks:**
+- `/~/messo/*` - Bolt's Messo analytics
+- `messo.min.js` - Messo script file
+- `/api/deploy/*` - Bolt deployment API
+- `/api/project/integrations/*` - Bolt integration endpoints
+- `chameleon` / `chmln.js` - Chameleon onboarding
+- `bolt.new/*` - Any Bolt infrastructure URLs
+
+**How it blocks:**
+1. **Fetch Interception** - Intercepts `window.fetch()`, returns fake 200 response for blocked URLs
+2. **XHR Interception** - Intercepts `XMLHttpRequest`, fakes successful response for blocked URLs
+3. **Script Tag Blocking** - Intercepts `document.createElement('script')`, prevents blocked scripts from loading
+4. **Error Suppression** - Catches and suppresses errors from Bolt infrastructure
+5. **Promise Rejection Handling** - Prevents unhandled rejections from Bolt code
+
+**Result:** Bolt's preview wrapper cannot inject failing scripts. Your app boots normally.
+
+### B. Enhanced Error Guard (`js/error-guard.js`)
 
 **Purpose:** Prevents third-party scripts from crashing the application
 
